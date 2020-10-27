@@ -1,17 +1,21 @@
 #!/usr/bin/env python
 # coding: utf-8
-
 import os
+from random import randint
+
+from classes.classe_MacGyver import MacGyver
+from classes.classe_Guardian import Guardian
 
 print()
 
-
 class Maze():
 
+    OBJECTS = ["needle", "tube", "ether"]
+
     def __init__(self):
-        self.grid = {}      # contains all the coordinates of wall, path, MacGyver, guardian and objects to find
-        self.path = []      # contains all the coordinates of path
-        self.parse_txt_in_coord()
+        self._initialisation()
+        self.parse_txt_in_coord()   # creates grid and path of the maze
+        self.create_objects()       # creates the objects to find and put them in the grid
     
     def parse_txt_in_coord(self):
         """
@@ -33,6 +37,30 @@ class Maze():
                 y += 1              # at each new line "y" increases by 1
         finally:
             text.close()
+
+    def create_objects(self):
+        """ calculates the coordinates of each objects to find and put them in the grid """        
+        for object in self.OBJECTS:                         # for each object to find
+            coords =self.path[randint(0, len(self.path)-1)]    # takes coordinates among those of path
+            while self.grid[coords] in self.OBJECTS:        # avoid to take coordinates already used by another object
+                coords = self.path[randint(0, len(self.path)-1)]
+            self.grid[coords] = object                      # if all is ok, positionnes the object in the grid
+
+    def _initialisation(self):
+        self.grid = {}      # contains all the coordinates of wall, path, MacGyver, guardian and objects to find
+        self.path = []      # contains all the coordinates of path
+        self.macgyver = MacGyver(5, 5)      # creates MacGyver's character
+        self.guardian = Guardian(7, 7)      # creates Guardian's character
+        self.objects_coord = {}
+
+    def test_destination_is_valid(self, x_new, y_new):
+        """ testes if the MacGyver's destination is a not wall or out of the maze
+            in this case return "True"
+        """
+        if (0<= x_new <= 14) and (0<= y_new <= 14):     # if destination is in the maze = "True"
+            return (self.grid[(x_new, y_new)] != "w")   # if destination is not a wall = "True"
+        else:
+            return False                                # else "False"
 
 
 if __name__ == "__main__":
