@@ -7,8 +7,7 @@ class MacGyver(Position):
 
     def __init__(self, x, y):
         Position.__init__(self, x, y)
-        self.x = x
-        self.y = y
+
     
     def move_to (self, destination):
         """ calculates the new coordinates after move to bottom, top, right or left of the screen """
