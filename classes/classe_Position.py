@@ -1,4 +1,5 @@
 
+
 class Position:
     """ defines the coordinates of objects or characters """
     def __init__(self, x, y):
