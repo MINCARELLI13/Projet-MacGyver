@@ -7,6 +7,7 @@ class MacGyver(Position):
 
     def __init__(self, x, y):
         Position.__init__(self, x, y)
+        self.bag = []
 
     
     def move_to (self, destination):
