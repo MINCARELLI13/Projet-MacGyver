@@ -33,6 +33,12 @@ class Maze():
                         self.grid[(x, y)] = lett
                     if lett == "O":
                         self.path.append((x, y))
+                    elif lett == "M":
+                        self.macgyver.x = x
+                        self.macgyver.y = y
+                    elif lett == "G":
+                        self.guardian.x = x
+                        self.guardian.y = y
                     x += 1
                 y += 1              # at each new line "y" increases by 1
         finally:
@@ -46,13 +52,6 @@ class Maze():
                 coords = self.path[randint(0, len(self.path)-1)]
             self.grid[coords] = object                      # if all is ok, positionnes the object in the grid
 
-    def _initialisation(self):
-        self.grid = {}      # contains all the coordinates of wall, path, MacGyver, guardian and objects to find
-        self.path = []      # contains all the coordinates of path
-        self.macgyver = MacGyver(5, 5)      # creates MacGyver's character
-        self.guardian = Guardian(7, 7)      # creates Guardian's character
-        self.objects_coord = {}
-
     def test_destination_is_valid(self, x_new, y_new):
         """ testes if the MacGyver's destination is a not wall or out of the maze
             in this case return "True"
@@ -61,6 +60,24 @@ class Maze():
             return (self.grid[(x_new, y_new)] != "w")   # if destination is not a wall = "True"
         else:
             return False                                # else "False"
+
+    def test_presence_object(self, x_new, y_new):
+        """ tests the presence of object on the destination coordinates (x_new, y_new) """
+        return self.grid[x_new, y_new] in self.OBJECTS
+
+    def collect_of_object(self):
+        """ picks up object on the destination cell and up date the grid with "O" """
+        self.macgyver.bag.append(self.grid[self.macgyver.x, self.macgyver.y])   # puts the object finded in the bag
+        self.grid[self.macgyver.x, self.macgyver.y] = "O"                       # and up date the grid with "O" like path :)
+
+    def test_presence_of_guardian(self, x_new, y_new):
+        return (x_new == self.guardian.x) and (y_new == self.guardian.y)
+
+    def _initialisation(self):
+        self.grid = {}      # contains all the coordinates of wall, path, MacGyver, guardian and objects to find
+        self.path = []      # contains all the coordinates of path
+        self.macgyver = MacGyver(0, 0)      # creates MacGyver's character
+        self.guardian = Guardian(0, 0)      # creates Guardian's character
 
 
 if __name__ == "__main__":
