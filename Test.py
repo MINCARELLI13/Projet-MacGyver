@@ -1,8 +1,8 @@
 # import pygame
 # from pygame.locals import *
 
-from classes.classe_MacGyver import MacGyver
-from classes.classe_Maze import Maze
+from classes.MacGyver import MacGyver
+from classes.Maze import Maze
 
 print()
 
