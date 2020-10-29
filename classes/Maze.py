@@ -5,7 +5,7 @@ from random import randint
 
 from classes.MacGyver import MacGyver
 from classes.Guardian import Guardian
-from config import Objects
+from config import OBJECTS
 
 print()
 
@@ -45,9 +45,9 @@ class Maze():
 
     def create_objects(self):
         """ calculates the coordinates of each object and put them in the grid """        
-        for object in Objects:                         # for each object to find
+        for object in OBJECTS:                         # for each object to find
             coords =self.path[randint(0, len(self.path)-1)]    # takes coordinates among those of path
-            while self.grid[coords] in Objects:        # avoid to take coordinates already used by another object
+            while self.grid[coords] in OBJECTS:        # avoid to take coordinates already used by another object
                 coords = self.path[randint(0, len(self.path)-1)]
             self.grid[coords] = object                 # if all is ok, positionnes the object in the grid
 
@@ -62,7 +62,7 @@ class Maze():
 
     def test_presence_object(self, x_new, y_new):
         """ tests the presence of object on the destination coordinates (x_new, y_new) """
-        return self.grid[x_new, y_new] in Objects
+        return self.grid[x_new, y_new] in OBJECTS
 
     def collect_of_object(self):
         """ picks up object on the destination cell and up date the grid with "O" """
