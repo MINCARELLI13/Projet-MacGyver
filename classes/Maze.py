@@ -54,23 +54,37 @@ class Maze():
 
     def test_destination_is_valid(self, x_new, y_new):
         """ testes if the MacGyver's destination is a not wall or out of the maze
-            in this case return "True"
+            In reception : receive coordonates of new destination of MacGyver as "x_new" = 5 and "y_new" = 13
+            In return    : return "True" or "False" as result
         """
+        # print("Dans Maze,", x_new, y_new)
         if (0<= x_new <= 14) and (0<= y_new <= 14):     # if destination is in the maze = "True"
             return (self.grid[(x_new, y_new)] != "w")   # if destination is not a wall = "True"
         else:
             return False                                # else "False"
 
     def test_presence_object(self, x_new, y_new):
-        """ tests the presence of object on the destination coordinates (x_new, y_new) """
+        """ tests the presence of object on the destination coordinates (x_new, y_new)
+            In reception : receive the news coordonates of MacGyver as "x_new" = 5 and "y_new" = 13
+            In return    : return True or False
+        """
         return self.grid[x_new, y_new] in OBJECTS
 
     def collect_of_object(self):
-        """ picks up object on the destination cell and up date the grid with "O" """
+        """ picks up object on the destination cell and up date the grid with "O"
+            In reception : receive any parameter
+            In return    : add object founded in Angus's attribut "macgyver.bag"
+                           and modifies the grid "maze.grid" in replace the "name of object" ("needle" for expl) by the path "O"
+        """
         self.macgyver.bag.append(self.grid[self.macgyver.x, self.macgyver.y])   # puts the object finded in the bag
+        print("Dans Maze :", self.macgyver.bag)
         self.grid[self.macgyver.x, self.macgyver.y] = "O"                       # and up date the grid with "O" like path :)
 
     def test_presence_of_guardian(self, x_new, y_new):
+        """ tests the presence of Guardian
+            In reception : receive the news coordonates of MacGyver as "x_new" = 5 and "y_new" = 13
+            In return    : return True or False
+        """
         return (x_new == self.guardian.x) and (y_new == self.guardian.y)
 
     def _initialisation(self):
