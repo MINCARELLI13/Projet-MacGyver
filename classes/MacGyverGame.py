@@ -4,13 +4,16 @@ import time
 import pygame
 from pygame.locals import *
 
+from Maze import Maze
+from MacGyver import MacGyver
 from config import STEP_MOV
 
 
 class Game:
 
-    def __init__(self, grid):
-        self.grid = grid
+    def __init__(self):
+        self.maze = Maze()
+        # self.grid = grid
         self.construct_maze()
         self.play_game()
 
@@ -35,7 +38,7 @@ class Game:
         # calculates the coordinates of MacGyver which will change during the play
         self.position_macgyver = self.macgyver.get_rect()
         self.position_macgyver = self.position_macgyver.move(40, 0)
-        # print("coord de Angus :", maze.macgyver.x, maze.macgyver.y)
+        print("coord de Angus :", self.maze.macgyver.x, self.maze.macgyver.y)
         self.display_maze_game()
 
 
@@ -45,7 +48,7 @@ class Game:
         self.fenetre.blit(self.macgyver, self.position_macgyver)        # display MacGyver in the window "fenetre"
 
         # display differents items of the maze in the window "fenetre"
-        for (coords, element) in self.grid.items():
+        for (coords, element) in self.maze.grid.items():
             if element == "w":
                 self.fenetre.blit(self.mur, (coords[0]*40, coords[1]*40))
             # elif element == "M":
@@ -89,8 +92,7 @@ class Game:
 
 
 if __name__ == "__main__":
-    pass
-    # game = Game()
+    game = Game()
 
 
 

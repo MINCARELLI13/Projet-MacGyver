@@ -5,7 +5,6 @@ from random import randint
 
 from MacGyver import MacGyver
 from Guardian import Guardian
-from MacGyverGame import Game
 from config import OBJECTS
 
 print()
@@ -16,7 +15,7 @@ class Maze():
         self._initialisation()
         self.parse_txt_in_coord()   # creates grid and path of the maze
         self.create_objects()       # creates the objects to find and put them in the grid
-        self.game = Game(self.grid) # construction of the maze with pygame
+        # self.game = Game(self.grid) # construction of the maze with pygame
     
     def parse_txt_in_coord(self):
         """
