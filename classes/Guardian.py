@@ -1,4 +1,4 @@
-from classes.Position import Position
+from Position import Position
 
 class Guardian(Position):
 
