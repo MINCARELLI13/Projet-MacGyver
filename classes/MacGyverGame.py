@@ -6,13 +6,14 @@ from pygame.locals import *
 
 from Maze import Maze
 from MacGyver import MacGyver
-from config import STEP_MOV
+from config import STEP_MOV, FAST
 
 
 class Game:
 
     def __init__(self):
         self.maze = Maze()
+        self.game_result = 0    # win_game = 1 and lose_game = 2
         self.construct_maze()
         self.play_game()
 
@@ -21,11 +22,11 @@ class Game:
         # path to graphics resources
         os.chdir("c:/Users/utilisateur/Desktop/Formation_OpenClassRoom/Projet_3/Ressources_graphiques")
 
-        # creates a window to put in items of the maze
         pygame.init()
+        # creates a window to put in items of the maze
         self.fenetre = pygame.display.set_mode((600, 600))
 
-        # loads the differents items of the maze
+        # loads the differents pics of the maze
         self.fond = pygame.image.load("fond_mcg.jpg").convert()
         self.mur = pygame.image.load("mur.png").convert()
         self.macgyver = pygame.image.load("macgyver.png").convert_alpha()
@@ -34,9 +35,14 @@ class Game:
         self.tube = pygame.image.load("tube_plastique.png").convert_alpha()
         self.ether = pygame.image.load("ether.png").convert_alpha()
 
+        self.win = pygame.image.load("win.png").convert_alpha()
+        self.game_over = pygame.image.load("game_over.png").convert_alpha()
+
         # calculates the coordinates of MacGyver which will change during the play
         self.position_macgyver = self.macgyver.get_rect()
-        self.position_macgyver = self.position_macgyver.move(40, 0)
+        print("JEU :", self.maze.macgyver.x, self.maze.macgyver.y)
+        self.position_macgyver = self.position_macgyver.move(self.maze.macgyver.x*40, self.maze.macgyver.y*40)
+
         self.display_maze_game()
 
 
@@ -47,24 +53,29 @@ class Game:
 
         # display differents items of the maze in the window "fenetre"
         for (coords, element) in self.maze.grid.items():
-            if element == "w":
+            if element == "w":                              # "w" is equivalent to a wall
                 self.fenetre.blit(self.mur, (coords[0]*40, coords[1]*40))
-            # elif element == "M":
-            #     self.fenetre.blit(self.macgyver, (coords[0]*40, coords[1]*40))        # MACGYVER
-            elif element == "G":
-                self.fenetre.blit(self.guardian, (coords[0]*40, coords[1]*40))
+            elif element == "G":                            # "G" is equivalent to the Guardian
+                if not self.game_result:
+                    self.fenetre.blit(self.guardian, (coords[0]*40, coords[1]*40))
             elif element == "needle":
                 self.fenetre.blit(self.needle, (coords[0]*40, coords[1]*40))
             elif element == "tube":
                 self.fenetre.blit(self.tube, (coords[0]*40, coords[1]*40))
             elif element == "ether":
                 self.fenetre.blit(self.ether, (coords[0]*40, coords[1]*40))
+
+        if self.game_result == 1:           # if the player win
+            self.fenetre.blit(self.win, (40, 10))
+        elif self.game_result == 2:         # if the player lose
+            self.fenetre.blit(self.game_over, (0, 0))
         pygame.display.flip()   # Screen refresh
 
     def play_game(self):
         """ detects pressing the keyboard's arrows, calculates new coordinates of MacGyver and moves him """
-        # pygame.key.set_repeat(300, 30)
-        mouvements = {K_DOWN:(0,STEP_MOV), K_UP:(0,-STEP_MOV), K_RIGHT:(STEP_MOV,0), K_LEFT:(-STEP_MOV,0)}
+        pygame.key.set_repeat(FAST[0], FAST[1])         # movement when an arrow is held down
+        mouvements = {K_DOWN:(0,STEP_MOV), K_UP:(0,-STEP_MOV), K_RIGHT:(STEP_MOV,0), K_LEFT:(-STEP_MOV,0)}  # corresponding movement in the game
+        mvt_in_maze = {K_DOWN:"bottom", K_UP:"top", K_RIGHT:"right", K_LEFT:"left"}     # corresponding movement in the Maze class
 
         # this loop continues until the game is closed
         continuer = 1
@@ -76,15 +87,25 @@ class Game:
                     continuer = 0                   # we stop the loop
 
                 if event.type == KEYDOWN:
-                    # if "test_destination_is_valid":
-                    #       if "test_presence_object":
-                    #           collect_of_object ET remove_object_of_game
-                    #       if "test_presence_of_guardian":
-                    #           teste si tous les objects ont été collectés ET arrête le jeu
-                    #       Déplace MacGyver sur la nouvelle case du game et enregistre ses nouvelles coordonnées dans grid
-                    #           et remet un "O" sur l'ancienne case de MacGyver
-                    #
-                    self.position_macgyver = self.position_macgyver.move(mouvements[event.key]) # calculate new position of Angus after "event.key"
+                    try:
+                        x_new = self.maze.macgyver.move_to(mvt_in_maze[event.key])[0]   # calculate new abscissa after moving MacGyver
+                        y_new = self.maze.macgyver.move_to(mvt_in_maze[event.key])[1]   # calculate new ordinate after moving MacGyver
+
+                        if self.maze.test_destination_is_valid(x_new, y_new):   # tests if destination is ok
+                            self.maze.macgyver.x = x_new    # if destination is ok, modification of MacGyver's abscissa
+                            self.maze.macgyver.y = y_new    # if destination is ok, modification of MacGyver's ordonate
+
+                            if self.maze.test_presence_object(x_new, y_new):    # tests presence of object to find 
+                                self.maze.collect_of_object()                   # collects object and remove him of maze's grid
+
+                            if self.maze.test_presence_of_guardian(x_new, y_new):                   # tests presence of "Guardian"
+                                if sorted(self.maze.macgyver.bag) == ['ether', 'needle', 'tube']:   # tests if MacGyver has collet all objects to win
+                                    self.game_result = 1        # it's wined
+                                else:
+                                    self.game_result = 2        # it's lost
+                            self.position_macgyver = self.position_macgyver.move(mouvements[event.key]) # calculate new position of Angus after "event.key"
+                    except KeyError:
+                        print("PAS LA BONNE TOUCHE !!!")
 
             self.display_maze_game()
 
