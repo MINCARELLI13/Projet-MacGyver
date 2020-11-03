@@ -6,6 +6,7 @@ from pygame.locals import *
 
 from config import STEP_MOV
 
+
 class Game:
 
     def __init__(self, grid):
@@ -88,7 +89,8 @@ class Game:
 
 
 if __name__ == "__main__":
-    game = Game()
+    pass
+    # game = Game()
 
 
 
