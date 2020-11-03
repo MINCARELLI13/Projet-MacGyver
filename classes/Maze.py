@@ -3,9 +3,9 @@
 import os
 from random import randint
 
-from classes.MacGyver import MacGyver
-from classes.Guardian import Guardian
-from classes.MacGyverGame import Game
+from MacGyver import MacGyver
+from Guardian import Guardian
+from MacGyverGame import Game
 from config import OBJECTS
 
 print()
