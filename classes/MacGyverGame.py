@@ -13,7 +13,6 @@ class Game:
 
     def __init__(self):
         self.maze = Maze()
-        # self.grid = grid
         self.construct_maze()
         self.play_game()
 
@@ -38,7 +37,6 @@ class Game:
         # calculates the coordinates of MacGyver which will change during the play
         self.position_macgyver = self.macgyver.get_rect()
         self.position_macgyver = self.position_macgyver.move(40, 0)
-        print("coord de Angus :", self.maze.macgyver.x, self.maze.macgyver.y)
         self.display_maze_game()
 
 
