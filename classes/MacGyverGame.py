@@ -14,13 +14,13 @@ class Game:
     def __init__(self):
         self.maze = Maze()
         self.game_result = 0    # win_game = 1 and lose_game = 2
-        self.construct_maze()
-        self.play_game()
+        self.construct_maze()   # construction of the graphic maze
+        self.play_game()        # game management
 
     def construct_maze(self):
         """ construction of the graphic maze """
         # path to graphics resources
-        os.chdir("c:/Users/utilisateur/Desktop/Formation_OpenClassRoom/Projet_3/Ressources_graphiques")
+        os.chdir("c:/Users/utilisateur/Desktop/Formation_OpenClassRoom/Projet_3/Projet/Ressources_graphiques")
 
         pygame.init()
         # creates a window to put in items of the maze
@@ -40,10 +40,10 @@ class Game:
 
         # calculates the coordinates of MacGyver which will change during the play
         self.macgyver_position = self.macgyver.get_rect()
+
         self.macgyver_position = self.macgyver_position.move(self.maze.macgyver.x*40, self.maze.macgyver.y*40)
 
         self.display_maze_game()
-
 
     def display_maze_game(self):
         """ displays the items of maze after each movement of MacGyver """
@@ -90,7 +90,8 @@ class Game:
                         x_new, y_new = self.maze.macgyver.move_to(mvt_in_maze[event.key])    # calculate new coordinates of MacGyver in the Maze class
 
                         if self.maze.test_destination_is_valid(x_new, y_new):   # tests if destination is ok
-                            self.maze.consequences_MacGyver_displacement(x_new, y_new)  # 
+                            self.maze.consequences_MacGyver_displacement(x_new, y_new)  # assigns news coordinates to MacGyver after displacement
+                                                                                        # and collects an object if it is on the new cell
 
                             if self.maze.test_presence_of_guardian(x_new, y_new):                   # tests presence of "Guardian" for news coordinates
                                 if sorted(self.maze.macgyver.bag) == ['ether', 'needle', 'tube']:   # tests if MacGyver has collet all objects to win
