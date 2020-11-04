@@ -39,9 +39,8 @@ class Game:
         self.game_over = pygame.image.load("game_over.png").convert_alpha()
 
         # calculates the coordinates of MacGyver which will change during the play
-        self.position_macgyver = self.macgyver.get_rect()
-        print("JEU :", self.maze.macgyver.x, self.maze.macgyver.y)
-        self.position_macgyver = self.position_macgyver.move(self.maze.macgyver.x*40, self.maze.macgyver.y*40)
+        self.macgyver_position = self.macgyver.get_rect()
+        self.macgyver_position = self.macgyver_position.move(self.maze.macgyver.x*40, self.maze.macgyver.y*40)
 
         self.display_maze_game()
 
@@ -49,7 +48,7 @@ class Game:
     def display_maze_game(self):
         """ displays the items of maze after each movement of MacGyver """
         self.fenetre.blit(self.fond, (0,0))                             # display the background in the window "fenetre"
-        self.fenetre.blit(self.macgyver, self.position_macgyver)        # display MacGyver in the window "fenetre"
+        self.fenetre.blit(self.macgyver, self.macgyver_position)        # display MacGyver in the window "fenetre"
 
         # display differents items of the maze in the window "fenetre"
         for (coords, element) in self.maze.grid.items():
@@ -88,22 +87,18 @@ class Game:
 
                 if event.type == KEYDOWN:
                     try:
-                        x_new = self.maze.macgyver.move_to(mvt_in_maze[event.key])[0]   # calculate new abscissa after moving MacGyver
-                        y_new = self.maze.macgyver.move_to(mvt_in_maze[event.key])[1]   # calculate new ordinate after moving MacGyver
+                        x_new, y_new = self.maze.macgyver.move_to(mvt_in_maze[event.key])    # calculate new coordinates of MacGyver in the Maze class
 
                         if self.maze.test_destination_is_valid(x_new, y_new):   # tests if destination is ok
-                            self.maze.macgyver.x = x_new    # if destination is ok, modification of MacGyver's abscissa
-                            self.maze.macgyver.y = y_new    # if destination is ok, modification of MacGyver's ordonate
+                            self.maze.consequences_MacGyver_displacement(x_new, y_new)  # 
 
-                            if self.maze.test_presence_object(x_new, y_new):    # tests presence of object to find 
-                                self.maze.collect_of_object()                   # collects object and remove him of maze's grid
-
-                            if self.maze.test_presence_of_guardian(x_new, y_new):                   # tests presence of "Guardian"
+                            if self.maze.test_presence_of_guardian(x_new, y_new):                   # tests presence of "Guardian" for news coordinates
                                 if sorted(self.maze.macgyver.bag) == ['ether', 'needle', 'tube']:   # tests if MacGyver has collet all objects to win
                                     self.game_result = 1        # it's wined
                                 else:
                                     self.game_result = 2        # it's lost
-                            self.position_macgyver = self.position_macgyver.move(mouvements[event.key]) # calculate new position of Angus after "event.key"
+
+                            self.macgyver_position = self.macgyver_position.move(mouvements[event.key]) # calculate new position of Angus after "event.key"
                     except KeyError:
                         print("PAS LA BONNE TOUCHE !!!")
 

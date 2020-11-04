@@ -56,7 +56,6 @@ class Maze():
             In reception : receive coordonates of new destination of MacGyver as "x_new" = 5 and "y_new" = 13
             In return    : return "True" or "False" as result
         """
-        # print("Dans Maze,", x_new, y_new)
         if (0<= x_new <= 14) and (0<= y_new <= 14):     # if destination is in the maze = "True"
             return (self.grid[(x_new, y_new)] != "w")   # if destination is not a wall = "True"
         else:
@@ -76,7 +75,6 @@ class Maze():
                            and modifies the grid "maze.grid" in replace the "name of object" ("needle" for expl) by the path "O"
         """
         self.macgyver.bag.append(self.grid[self.macgyver.x, self.macgyver.y])   # puts the object finded in the bag
-        print("Dans Maze :", self.macgyver.bag)
         self.grid[self.macgyver.x, self.macgyver.y] = "O"                       # and up date the grid with "O" like path :)
 
     def test_presence_of_guardian(self, x_new, y_new):
@@ -85,6 +83,18 @@ class Maze():
             In return    : return True or False
         """
         return (x_new == self.guardian.x) and (y_new == self.guardian.y)
+
+    def consequences_MacGyver_displacement(self, x_new, y_new):
+        """ assigns news coordinates to MacGyver after displacement
+            and collects an object if it is on the new cell
+            In reception : receive the news coordonates of MacGyver as "x_new" = 5 and "y_new" = 13
+            In return    : assigns the new coordinates to MacGyver and collects object in case of presence
+        """
+        self.macgyver.x = x_new    # modification of MacGyver's abscissa in the Maze class
+        self.macgyver.y = y_new    # modification of MacGyver's ordonate in the Maze class
+
+        if self.test_presence_object(x_new, y_new):    # tests presence of object to find 
+            self.collect_of_object()                   # collects object and remove him of maze's grid
 
     def _initialisation(self):
         self.grid = {}      # contains all the coordinates of wall, path, MacGyver, guardian and objects to find
