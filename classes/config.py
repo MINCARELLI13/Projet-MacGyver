@@ -1,13 +1,16 @@
 """ set of the constants used in the game 'MacGyver in the maze' """
 
-#!/usr/bin/env python
+# !/usr/bin/env python
 # coding: utf-8
 
-OBJECTS = ["needle", "tube", "ether"]   # list of objects to find by MacGyver
+# list of objects to find by MacGyver
+OBJECTS = ["needle", "tube", "ether"]
 
-STEP_MOV = 40       # displacement step of MacGyver
+# displacement step of MacGyver
+STEP_MOV = 40
 
-FAST = [200, 100]    # speed of movement with the key pressed
+# speed of movement with the key pressed
+FAST = [200, 100]
 
 if __name__ == "__main__":
     pass

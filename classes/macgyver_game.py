@@ -1,4 +1,7 @@
-""" This class manages the animation and the graphics part of the program """
+"""
+    This class manages the animation
+    and the graphics part of the program
+"""
 
 import os
 
@@ -10,7 +13,10 @@ from config import STEP_MOV, FAST
 
 
 class Game:
-    """ This class manages the animation and the graphics part of the program """
+    """
+        This class manages the animation
+        and the graphics part of the program
+    """
 
     def __init__(self):
         self.maze = Maze()
@@ -136,8 +142,8 @@ class Game:
         # calculates the coordinates of MacGyver \
         #  which will change during the play
         self.macgyver_position = self.macgyver.get_rect()
-        self.macgyver_position = \
-        self.macgyver_position.move(self.maze.macgyver.x*40,
+        self.macgyver_position = self.macgyver_position.move(
+                                    self.maze.macgyver.x*40,
                                     self.maze.macgyver.y*40)
 
 
