@@ -4,7 +4,7 @@
 # !/usr/bin/env python
 # coding: utf-8
 
-from position import Position
+from classes.position import Position
 
 
 class MacGyver(Position):

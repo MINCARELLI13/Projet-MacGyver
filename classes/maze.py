@@ -8,9 +8,9 @@
 import os
 from random import randint
 
-from macgyver import MacGyver
-from guardian import Guardian
-from config import OBJECTS
+from classes.macgyver import MacGyver
+from classes.guardian import Guardian
+from classes.config import OBJECTS
 
 print()
 

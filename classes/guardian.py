@@ -1,6 +1,6 @@
 """ this class allows to create the guardian """
 
-from position import Position
+from classes.position import Position
 
 
 class Guardian(Position):

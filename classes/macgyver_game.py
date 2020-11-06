@@ -8,8 +8,8 @@ import os
 from pygame import display, key, event, image, QUIT
 from pygame import K_DOWN, K_UP, K_RIGHT, K_LEFT, KEYDOWN
 
-from maze import Maze
-from config import STEP_MOV, FAST
+from classes.maze import Maze
+from classes.config import STEP_MOV, FAST
 
 
 class Game:
@@ -41,6 +41,7 @@ class Game:
             if element == "w":  # "w" is equivalent to a wall
                 self.fenetre.blit(self.mur, (coords[0]*40, coords[1]*40))
             elif element == "G":  # "G" is equivalent to the Guardian
+                # if game_result => "end of game" => no more Guardian
                 if not self.game_result:
                     self.fenetre.blit(self.guardian,
                                       (coords[0]*40, coords[1]*40))
@@ -53,8 +54,12 @@ class Game:
 
         if self.game_result == 1:           # if the player win
             self.fenetre.blit(self.win, (40, 10))
+            # to block MacGyver at end
+            self.maze.grid[13, 13] = "w"
         elif self.game_result == 2:         # if the player lose
             self.fenetre.blit(self.game_over, (0, 0))
+            # to block MacGyver at end
+            self.maze.grid[13, 13] = "w"
         display.flip()   # Screen refresh
 
     def play_game(self):
