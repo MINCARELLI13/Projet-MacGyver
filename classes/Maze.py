@@ -1,16 +1,25 @@
+""" This class manages the back office of the game :
+    building of the maze, creation of characters
+    and of objects to find
+"""
+
 #!/usr/bin/env python
 # coding: utf-8
 import os
 from random import randint
 
-from MacGyver import MacGyver
-from Guardian import Guardian
+from macgyver import MacGyver
+from guardian import Guardian
 from config import OBJECTS
 
 print()
 
 
 class Maze():
+    """ This class manages the back office of the game :
+        building of the maze, creation of characters
+        and of objects to find
+    """
 
     def __init__(self):
         self._initialisation()
@@ -28,28 +37,31 @@ class Maze():
                  "Formation_OpenClassRoom/Projet_3/Projet")
         text = open("maze.txt")
 
-        y = 0
+        # number of line of the file "maze.txt"
+        line_maze_txt = 0
         try:
             for ligne in text.readlines():
+                # number of column of the file "maze.txt"
                 # each time a new line is read, x is reset to zero
-                x = 0
+                column_maze_txt = 0
                 # each coordinate corresponds to a "wall" ("w")
-                # or to a "path" ("O") or ...
+                # or to a "path" ("O") or the Guardian ("G") ...
                 for lett in ligne:
                     # to verify that grid loads only items of the maze
                     if lett in ["w", "O", "M", "G"]:
-                        self.grid[(x, y)] = lett
+                        self.grid[(column_maze_txt, line_maze_txt)] = lett
                     if lett == "O":
-                        self.path.append((x, y))
+                        self.path.append((column_maze_txt, line_maze_txt))
                     elif lett == "M":
-                        self.macgyver.x = x
-                        self.macgyver.y = y
+                        self.macgyver.x = column_maze_txt
+                        self.macgyver.y = line_maze_txt
                     elif lett == "G":
-                        self.guardian.x = x
-                        self.guardian.y = y
-                    x += 1
-                # at each new line "y" increases by 1
-                y += 1
+                        self.guardian.x = column_maze_txt
+                        self.guardian.y = line_maze_txt
+                    column_maze_txt += 1
+                # at each time a new line is complitly read,
+                # "line_maze_txt" is increased of one
+                line_maze_txt += 1
         finally:
             text.close()
 
@@ -58,14 +70,14 @@ class Maze():
             and put them in the grid
         """
         # for each object to find
-        for object in OBJECTS:
+        for object_name in OBJECTS:
             # takes coordinates among those of path
             coords = self.path[randint(0, len(self.path) - 1)]
-            # avoid to take coordinates already used by another object
+            # to avoid to take coordinates already used by another object
             while self.grid[coords] in OBJECTS:
                 coords = self.path[randint(0, len(self.path) - 1)]
             # if all is ok, positionnes the object in the grid
-            self.grid[coords] = object
+            self.grid[coords] = object_name
 
     def test_destination_is_valid(self, x_new, y_new):
         """ testes if the MacGyver's destination is not a wall or out of the maze
@@ -76,9 +88,9 @@ class Maze():
         # if destination is in the maze = "True"
         if (0 <= x_new <= 14) and (0 <= y_new <= 14):
             # if destination is not a wall = "True"
-            return (self.grid[(x_new, y_new)] != "w")
-        else:
-            return False
+            return self.grid[(x_new, y_new)] != "w"
+        # else return "False"
+        return False
 
     def test_presence_object(self, x_new, y_new):
         """ tests the presence of object on the
@@ -111,7 +123,7 @@ class Maze():
         """
         return (x_new == self.guardian.x) and (y_new == self.guardian.y)
 
-    def consequences_MacGyver_displacement(self, x_new, y_new):
+    def consequences_macgyver_displacement(self, x_new, y_new):
         """ assigns news coordinates to MacGyver after displacement
             and collects an object if it is on the new cell
             In reception : receive the news coordonates of MacGyver

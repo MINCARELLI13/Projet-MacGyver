@@ -1,10 +1,15 @@
+""" this class allows to create the MacGyver character
+    and of calculate the new coordinates of her destination """
+
 #!/usr/bin/env python
 # coding: utf-8
 
-from Position import Position
+from position import Position
 
 
 class MacGyver(Position):
+    """ this class allows to create the MacGyver character
+    and of calculate the new coordinates of her destination """
 
     def __init__(self, x, y):
         Position.__init__(self, x, y)

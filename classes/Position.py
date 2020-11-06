@@ -1,3 +1,4 @@
+""" defines the coordinates of objects or characters """
 
 class Position:
     """ defines the coordinates of objects or characters """
