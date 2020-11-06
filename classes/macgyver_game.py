@@ -2,10 +2,10 @@
 
 import os
 
-import pygame
-import pygame.locals as pyl
+from pygame import display, key, event, image, QUIT
+from pygame import K_DOWN, K_UP, K_RIGHT, K_LEFT, KEYDOWN
 
-from Maze import Maze
+from maze import Maze
 from config import STEP_MOV, FAST
 
 
@@ -49,37 +49,37 @@ class Game:
             self.fenetre.blit(self.win, (40, 10))
         elif self.game_result == 2:         # if the player lose
             self.fenetre.blit(self.game_over, (0, 0))
-        pygame.display.flip()   # Screen refresh
+        display.flip()   # Screen refresh
 
     def play_game(self):
         """ detects pressing the keyboard's arrows,
             calculates new coordinates of MacGyver and moves him
         """
         # movement when an arrow is held down
-        pygame.key.set_repeat(FAST[0], FAST[1])
+        key.set_repeat(FAST[0], FAST[1])
 
         # this loop continues until the game is closed
         continuer = 1
         while continuer:
             # we browse the list of all the events received
-            for event in pygame.event.get():
+            for evt in event.get():
 
-                if event.type == pyl.QUIT:  # if an event is "QUIT"
+                if evt.type == QUIT:  # if an event is "QUIT"
                     continuer = 0   # we stop the loop
 
-                if event.type == pyl.KEYDOWN:
-                    self.test_destination_after_keydown(event.key)
+                if evt.type == KEYDOWN:
+                    self.test_destination_after_keydown(evt.key)
 
             self.display_maze_game()
 
     def test_destination_after_keydown(self, eventkey):
         """ tests the destination after "KEYDOWN" """
         # corresponding movement in the game
-        mouvements = {pyl.K_DOWN: (0, STEP_MOV), pyl.K_UP: (0, -STEP_MOV),
-                      pyl.K_RIGHT: (STEP_MOV, 0), pyl.K_LEFT: (-STEP_MOV, 0)}
+        mouvements = {K_DOWN: (0, STEP_MOV), K_UP: (0, -STEP_MOV),
+                      K_RIGHT: (STEP_MOV, 0), K_LEFT: (-STEP_MOV, 0)}
         # corresponding movement in the Maze class
-        mvt_in_maze = {pyl.K_DOWN: "bottom", pyl.K_UP: "top",
-                       pyl.K_RIGHT: "right", pyl.K_LEFT: "left"}
+        mvt_in_maze = {K_DOWN: "bottom", K_UP: "top",
+                       K_RIGHT: "right", K_LEFT: "left"}
         try:
             # calculate new coordinates
             # of MacGyver in the Maze class
@@ -91,7 +91,7 @@ class Game:
                 # assigns news coordinates to MacGyver
                 # after displacement and collects
                 # an object if it is on the new cell
-                self.maze.consequences_MacGyver_displacement(
+                self.maze.consequences_macgyver_displacement(
                     x_new, y_new)
 
                 # tests presence of "Guardian" for news coordinates
@@ -119,19 +119,19 @@ class Game:
                  "Projet_3/Projet/Ressources_graphiques")
 
         # creates a window to put in items of the maze
-        self.fenetre = pygame.display.set_mode((600, 600))
+        self.fenetre = display.set_mode((600, 600))
 
         # loads the differents pics of the maze
-        self.fond = pygame.image.load("fond_mcg.jpg").convert()
-        self.mur = pygame.image.load("mur.png").convert()
-        self.macgyver = pygame.image.load("macgyver.png").convert_alpha()
-        self.guardian = pygame.image.load("gardien.png").convert_alpha()
-        self.needle = pygame.image.load("seringue.png").convert_alpha()
-        self.tube = pygame.image.load("tube_plastique.png").convert_alpha()
-        self.ether = pygame.image.load("ether.png").convert_alpha()
+        self.fond = image.load("fond_mcg.jpg").convert()
+        self.mur = image.load("mur.png").convert()
+        self.macgyver = image.load("macgyver.png").convert_alpha()
+        self.guardian = image.load("gardien.png").convert_alpha()
+        self.needle = image.load("seringue.png").convert_alpha()
+        self.tube = image.load("tube_plastique.png").convert_alpha()
+        self.ether = image.load("ether.png").convert_alpha()
 
-        self.win = pygame.image.load("win.png").convert_alpha()
-        self.game_over = pygame.image.load("game_over.png").convert_alpha()
+        self.win = image.load("win.png").convert_alpha()
+        self.game_over = image.load("game_over.png").convert_alpha()
 
         # calculates the coordinates of MacGyver \
         #  which will change during the play
