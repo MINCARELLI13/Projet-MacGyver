@@ -1,3 +1,5 @@
 """ this file main.py is used to launch the game "Mac Gyver in the Maze" """
 
-exec(open("classes/macgyver_game.py").read())
+from classes.macgyver_game import Game
+
+game = Game()
