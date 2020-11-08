@@ -32,32 +32,32 @@ class Game:
     def display_maze_game(self):
         """ displays the items of maze after each movement of MacGyver """
         # display the background in the window "fenetre"
-        self.fenetre.blit(self.fond, (0, 0))
+        self.fenetre.blit(self.fond_pic, (0, 0))
         # display MacGyver in the window "fenetre"
-        self.fenetre.blit(self.macgyver, self.macgyver_position)
+        self.fenetre.blit(self.macgyver_pic, self.macgyver_pic_position)
 
         # display differents items of the maze in the window "fenetre"
         for (coords, element) in self.maze.grid.items():
             if element == "w":  # "w" is equivalent to a wall
-                self.fenetre.blit(self.mur, (coords[0]*40, coords[1]*40))
+                self.fenetre.blit(self.mur_pic, (coords[0]*40, coords[1]*40))
             elif element == "G":  # "G" is equivalent to the Guardian
-                # if game_result => "end of game" => no more Guardian
+                # game_result != 0 => "end of game" => no more Guardian
                 if not self.game_result:
-                    self.fenetre.blit(self.guardian,
+                    self.fenetre.blit(self.guardian_pic,
                                       (coords[0]*40, coords[1]*40))
             elif element == "needle":
-                self.fenetre.blit(self.needle, (coords[0]*40, coords[1]*40))
+                self.fenetre.blit(self.needle_pic, (coords[0]*40, coords[1]*40))
             elif element == "tube":
-                self.fenetre.blit(self.tube, (coords[0]*40, coords[1]*40))
+                self.fenetre.blit(self.tube_pic, (coords[0]*40, coords[1]*40))
             elif element == "ether":
-                self.fenetre.blit(self.ether, (coords[0]*40, coords[1]*40))
+                self.fenetre.blit(self.ether_pic, (coords[0]*40, coords[1]*40))
 
         if self.game_result == 1:           # if the player win
-            self.fenetre.blit(self.win, (40, 10))
+            self.fenetre.blit(self.win_pic, (40, 10))
             # to block MacGyver at end
             self.maze.grid[13, 13] = "w"
         elif self.game_result == 2:         # if the player lose
-            self.fenetre.blit(self.game_over, (0, 0))
+            self.fenetre.blit(self.game_over_pic, (0, 0))
             # to block MacGyver at end
             self.maze.grid[13, 13] = "w"
         display.flip()   # Screen refresh
@@ -101,7 +101,7 @@ class Game:
                     x_new, y_new):
                 # assigns news coordinates to MacGyver
                 # after displacement and collects
-                # an object if it is on the new cell
+                # if an object is on the new cell
                 self.maze.consequences_macgyver_displacement(
                     x_new, y_new)
 
@@ -117,8 +117,8 @@ class Game:
                         self.game_result = 2  # it's lost
                 # calculate new position of Angus
                 # after "event.key"
-                self.macgyver_position = \
-                    self.macgyver_position.move(
+                self.macgyver_pic_position = \
+                    self.macgyver_pic_position.move(
                         mouvements[eventkey])
         except KeyError:
             print("PAS LA BONNE TOUCHE !!!")
@@ -133,21 +133,21 @@ class Game:
         self.fenetre = display.set_mode((600, 600))
 
         # loads the differents pics of the maze
-        self.fond = image.load("fond_mcg.jpg").convert()
-        self.mur = image.load("mur.png").convert()
-        self.macgyver = image.load("macgyver.png").convert_alpha()
-        self.guardian = image.load("gardien.png").convert_alpha()
-        self.needle = image.load("seringue.png").convert_alpha()
-        self.tube = image.load("tube_plastique.png").convert_alpha()
-        self.ether = image.load("ether.png").convert_alpha()
+        self.fond_pic = image.load("fond_mcg.jpg").convert()
+        self.mur_pic = image.load("mur.png").convert()
+        self.macgyver_pic = image.load("macgyver.png").convert_alpha()
+        self.guardian_pic = image.load("gardien.png").convert_alpha()
+        self.needle_pic = image.load("seringue.png").convert_alpha()
+        self.tube_pic = image.load("tube_plastique.png").convert_alpha()
+        self.ether_pic = image.load("ether.png").convert_alpha()
 
-        self.win = image.load("win.png").convert_alpha()
-        self.game_over = image.load("game_over.png").convert_alpha()
+        self.win_pic = image.load("win.png").convert_alpha()
+        self.game_over_pic = image.load("game_over.png").convert_alpha()
 
         # calculates the coordinates of MacGyver \
         #  which will change during the play
-        self.macgyver_position = self.macgyver.get_rect()
-        self.macgyver_position = self.macgyver_position.move(
+        self.macgyver_pic_position = self.macgyver_pic.get_rect()
+        self.macgyver_pic_position = self.macgyver_pic_position.move(
                                     self.maze.macgyver.x*40,
                                     self.maze.macgyver.y*40)
 
