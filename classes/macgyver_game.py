@@ -4,9 +4,11 @@
 """
 
 import os
+import time
 
 from pygame import display, key, event, image, QUIT
 from pygame import K_DOWN, K_UP, K_RIGHT, K_LEFT, KEYDOWN
+import pygame
 
 from classes.maze import Maze
 from classes.config import STEP_MOV, FAST
@@ -31,6 +33,7 @@ class Game:
 
     def display_maze_game(self):
         """ displays the items of maze after each movement of MacGyver """
+        sleep = False
         # display the background in the window "fenetre"
         self.fenetre.blit(self.fond_pic, (0, 0))
         # display MacGyver in the window "fenetre"
@@ -42,7 +45,7 @@ class Game:
                 self.fenetre.blit(self.mur_pic, (coords[0]*40, coords[1]*40))
             elif element == "G":  # "G" is equivalent to the Guardian
                 # game_result != 0 => "end of game" => no more Guardian
-                if not self.game_result:
+                if self.game_result == 0:
                     self.fenetre.blit(self.guardian_pic,
                                       (coords[0]*40, coords[1]*40))
             elif element == "needle":
@@ -56,11 +59,15 @@ class Game:
             self.fenetre.blit(self.win_pic, (40, 10))
             # to block MacGyver at end
             self.maze.grid[13, 13] = "w"
+            sleep = True
         elif self.game_result == 2:         # if the player lose
             self.fenetre.blit(self.game_over_pic, (0, 0))
             # to block MacGyver at end
             self.maze.grid[13, 13] = "w"
+            sleep = True
         display.flip()   # Screen refresh
+        if sleep:
+            time.sleep(5)
 
     def play_game(self):
         """ detects pressing the keyboard's arrows,
@@ -69,14 +76,14 @@ class Game:
         # movement when an arrow is held down
         key.set_repeat(FAST[0], FAST[1])
 
-        # this loop continues until the game is closed
-        continuer = 1
-        while continuer:
-            # we browse the list of all the events received
+        # this loop continues while game_result == 0
+        while self.game_result == 0:
+            # browses the list of all the events received
             for evt in event.get():
 
-                if evt.type == QUIT:  # if an event is "QUIT"
-                    continuer = 0   # we stop the loop
+                if evt.type == QUIT:    # if an event is "QUIT"
+                    pygame.quit()       # deactivates the Pygame library 
+                    exit()              # stop the game
 
                 if evt.type == KEYDOWN:
                     self.test_destination_after_keydown(evt.key)
@@ -124,6 +131,8 @@ class Game:
             print("PAS LA BONNE TOUCHE !!!")
 
     def _initialisation(self):
+
+        pygame.init()
 
         # path to graphics resources
         os.chdir("c:/Users/utilisateur/Desktop/Formation_OpenClassRoom/"
