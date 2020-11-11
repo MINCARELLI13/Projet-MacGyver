@@ -11,7 +11,7 @@ from pygame import K_DOWN, K_UP, K_RIGHT, K_LEFT, KEYDOWN
 import pygame
 
 from classes.maze import Maze
-from classes.config import STEP_MOV, FAST
+from classes.config import STEP_MOV, FAST, DELAY
 
 
 class Game:
@@ -49,7 +49,8 @@ class Game:
                     self.fenetre.blit(self.guardian_pic,
                                       (coords[0]*40, coords[1]*40))
             elif element == "needle":
-                self.fenetre.blit(self.needle_pic, (coords[0]*40, coords[1]*40))
+                self.fenetre.blit(self.needle_pic,
+                                  (coords[0]*40, coords[1]*40))
             elif element == "tube":
                 self.fenetre.blit(self.tube_pic, (coords[0]*40, coords[1]*40))
             elif element == "ether":
@@ -67,7 +68,7 @@ class Game:
             sleep = True
         display.flip()   # Screen refresh
         if sleep:
-            time.sleep(5)
+            time.sleep(DELAY)
 
     def play_game(self):
         """ detects pressing the keyboard's arrows,
@@ -82,7 +83,7 @@ class Game:
             for evt in event.get():
 
                 if evt.type == QUIT:    # if an event is "QUIT"
-                    pygame.quit()       # deactivates the Pygame library 
+                    pygame.quit()       # deactivates the Pygame library
                     exit()              # stop the game
 
                 if evt.type == KEYDOWN:

@@ -12,5 +12,8 @@ STEP_MOV = 40
 # speed of movement with the key pressed
 FAST = [200, 100]
 
+# display after end of game (in seconds)
+DELAY = 5
+
 if __name__ == "__main__":
     pass
