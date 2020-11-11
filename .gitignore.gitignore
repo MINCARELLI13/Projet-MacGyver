@@ -1,4 +1,6 @@
-﻿# Fichiers compilés / optimisés / DLL
+﻿env/
+
+# Fichiers compilés / optimisés / DLL
 __pycache __ /
 * .py [morue]
 * $ py.class
