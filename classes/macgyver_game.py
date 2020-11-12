@@ -24,12 +24,7 @@ class Game:
         self.maze = Maze()
         self.game_result = 0    # win_game = 1 and lose_game = 2
         self._initialisation()
-        self.construct_maze()   # construction of the graphic maze
         self.play_game()        # game management
-
-    def construct_maze(self):
-        """ construction of the graphic maze """
-        self.display_maze_game()
 
     def display_maze_game(self):
         """ displays the items of maze after each movement of MacGyver """
