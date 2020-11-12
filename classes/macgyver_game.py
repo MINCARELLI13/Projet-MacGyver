@@ -28,6 +28,7 @@ class Game:
 
     def display_maze_game(self):
         """ displays the items of maze after each movement of MacGyver """
+        # the sleep mode wil be actived at the end of game
         sleep = False
         # display the background in the window "fenetre"
         self.fenetre.blit(self.fond_pic, (0, 0))
@@ -53,15 +54,14 @@ class Game:
 
         if self.game_result == 1:           # if the player win
             self.fenetre.blit(self.win_pic, (40, 10))
-            # to block MacGyver at end
-            self.maze.grid[13, 13] = "w"
+            # actives the sleep mode
             sleep = True
         elif self.game_result == 2:         # if the player lose
             self.fenetre.blit(self.game_over_pic, (0, 0))
-            # to block MacGyver at end
-            self.maze.grid[13, 13] = "w"
+            # actives the sleep mode
             sleep = True
         display.flip()   # Screen refresh
+        # maintains display for a few seconds after the game ends
         if sleep:
             time.sleep(DELAY)
 
